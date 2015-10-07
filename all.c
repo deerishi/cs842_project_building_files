@@ -1,6 +1,6 @@
 ggggc_poolList=NULL;
 ggggc_curPool=NULL;
-freeList=NULL;
+freeList=NULL;freeList->next=NULL;
 void *ggggc_malloc(struct GGGGC_Descriptor *descriptor)
 {
 	GGGGC_Pool *pool;
@@ -15,15 +15,27 @@ void *ggggc_malloc(struct GGGGC_Descriptor *descriptor)
 	{
 		obj_header = (struct GGGGC_Header *) pool->free;
 		pool->free = pool->free + descriptor->size;
+		obj_header->descriptor__ptr=descriptor;
 	}
 	else if(freeList)  //Implementing First Fit Criteria with splitting 
 	{
-		struct FreeObjects *start=freelist , *prev=free;
+		struct FreeObjects *start=freelist , *prev=free,*temp;
 		while(start!=NULL)
 		{
 			if(start->size >= descriptor->size)
 			{
-				obj->header=(struct GGGGC_Header *) start
+				obj->header=(struct GGGGC_Header *) start;
+				obj_header->descriptor__ptr=descriptor;
+				temp=prev->next;
+				prev->next=start+descriptor->size;
+				prev->next->size=start->size-descriptor->size;
+				prev->next->next=temp;
+				break;
+			}
+		}
+	}
+	else if(
+				
 	GGGGC_Pool *currentPointer; 
 	if(freePoolsHead->free + descriptor.size > freePoolsHead->end)
 	{
