@@ -1,7 +1,12 @@
 struct FreeObjects
 {
-	ggc_size_t size;
+	struct GGGGC_Header * freeObjHeader;
 	struct FreeObjects *next;
 }
+
+struct MarkReferences {
+	struct MarkReferences *next;
+
 extern struct FreeObjects *freeList;
+extern char *isFreeObject,*isNotFreeObject;
 	
