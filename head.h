@@ -1,6 +1,5 @@
 struct FreeObjects
 {
-	struct GGGGC_Header * freeObjHeader;
 	struct FreeObjects *next;
 }
 
